@@ -19,4 +19,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>, JpaSpecific
     @Modifying
     @Query(value = "update Board b set b.status = 0 where b.boardId = :boardId")
     void deleteBoard(Long boardId);
+
+    Board findByBoardId(Long boardId);
 }

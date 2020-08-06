@@ -1,5 +1,6 @@
 package com.example.board.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -38,4 +39,5 @@ public class Board {
 
     @Column
     private int status;
+
 }
