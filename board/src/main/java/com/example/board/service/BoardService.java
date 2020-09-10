@@ -4,6 +4,7 @@ import com.example.board.BoardException;
 import com.example.board.model.Board;
 import com.example.board.repository.BoardRepository;
 import com.example.board.specification.BoardSpecification;
+import com.example.board.util.BoardStatusUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,17 +15,12 @@ import org.springframework.stereotype.Service;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    // 삭제된 게시판 상태 코드
+    private static final int DELETE_BOARD_CODE = 0;
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
     }
-
-    // 404 메시지
-    private static final String NOT_FOUND_ERROR_MESSAGE = "요청하신 게시물은 삭제되었거나 존재하지 않는 게시물입니다.";
-    // 500 메시지
-    private static final String SERVER_ERROR_MESSAGE = "서버의 예기치 못한 오류로 인하여 요청에 실패했습니다.";
-    private static final int NOT_FOUND_CODE = 404;
-    private static final int SERVER_ERROR_CODE = 500;
 
     public Page<Board> boardList(String category, String keyword, Pageable pageable) throws BoardException {
         // category, keyword like query 생성
@@ -32,7 +28,7 @@ public class BoardService {
         try {
             return boardRepository.findAll(specification, pageable);
         } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+            throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
         }
     }
 
@@ -41,7 +37,7 @@ public class BoardService {
         try {
             boardRepository.save(board);
         } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+            throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
         }
     }
 
@@ -50,15 +46,15 @@ public class BoardService {
         try {
             Board board = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 존재하지않는 메시지를 발생시킨다.
-            if(board.getStatus() == 0) {
-                throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+            if(board.getStatus() == DELETE_BOARD_CODE) {
+                throw new BoardException(BoardStatusUtil.getNotFoundErrorMessage(), BoardStatusUtil.getNotFoundCode());
             } else {
                 return board;
             }
         } catch (NullPointerException exception) {
-            throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+            throw new BoardException(BoardStatusUtil.getNotFoundErrorMessage(), BoardStatusUtil.getNotFoundCode());
         } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+            throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
         }
     }
 
@@ -67,22 +63,22 @@ public class BoardService {
         try {
             Board isBoard = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 존재하지않는 메시지를 발생시킨다.
-            if(isBoard.getStatus() == 0) {
-                throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+            if(isBoard.getStatus() == DELETE_BOARD_CODE) {
+                throw new BoardException(BoardStatusUtil.getNotFoundErrorMessage(), BoardStatusUtil.getNotFoundCode());
             }
             boardRepository.save(board);
         } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+            throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
         }
     }
 
     public void deleteBoard(Long boardId) throws BoardException {
 
         try {
-            // 게시물 상태값 0으로 변경
+            // 게시물 삭제 상태값 으로 변경
             boardRepository.deleteBoard(boardId);
         } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+            throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
         }
     }
 }
