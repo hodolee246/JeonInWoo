@@ -23,7 +23,6 @@ public class BoardExceptionController {
      */
     @ExceptionHandler(BoardException.class)
     public ResponseEntity<?> boardException(BoardException e) {
-
         log.info("BoardController boardException");
         HashMap<String, Object> resultMap = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();
@@ -42,7 +41,6 @@ public class BoardExceptionController {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> ServerException(Exception e) {
-
         log.info("BoardController Exception");
         HashMap<String, Object> resultMap = new HashMap<>();
         HashMap<String, Object> error = new HashMap<>();

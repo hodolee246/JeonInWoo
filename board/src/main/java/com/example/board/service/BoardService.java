@@ -33,7 +33,6 @@ public class BoardService {
     }
 
     public void createBoard(Board board) throws BoardException {
-
         try {
             boardRepository.save(board);
         } catch (Exception e) {
@@ -42,7 +41,6 @@ public class BoardService {
     }
 
     public Board readBoard(Long boardId) throws BoardException {
-
         try {
             Board board = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 존재하지않는 메시지를 발생시킨다.
@@ -59,7 +57,6 @@ public class BoardService {
     }
 
     public void updateBoard(Long boardId, Board board) throws BoardException {
-
         try {
             Board isBoard = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 존재하지않는 메시지를 발생시킨다.
@@ -73,7 +70,6 @@ public class BoardService {
     }
 
     public void deleteBoard(Long boardId) throws BoardException {
-
         try {
             // 게시물 삭제 상태값 으로 변경
             boardRepository.deleteBoard(boardId);

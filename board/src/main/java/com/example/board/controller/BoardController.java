@@ -35,7 +35,6 @@ public class BoardController {
     public ResponseEntity<?> boardList(@PageableDefault(size = 5) Pageable pageable,
                                        @RequestParam(name = "category", defaultValue = "") String category,
                                        @RequestParam(name = "keyword", defaultValue = "") String keyword) throws BoardException {
-
         log.info("BoardController boardList / page : {} / category : {} / keyword : {}", pageable.toString(), category, keyword);
         Page<Board> boardPage = boardService.boardList(category, keyword, pageable);
 
@@ -56,7 +55,6 @@ public class BoardController {
      */
     @GetMapping("/board/{boardId}")
     public ResponseEntity<?> readBoard(@PathVariable Long boardId) throws BoardException {
-
         log.info("BoardController readBoard / boardId : {}", boardId);
         Board board = boardService.readBoard(boardId);
 
@@ -72,7 +70,6 @@ public class BoardController {
      */
     @PostMapping("/board")
     public ResponseEntity<?> createBoard(@RequestBody Board board) throws BoardException {
-
         log.info("BoardController writeBoard / board : {}", board.toString());
         boardService.createBoard(board);
 
@@ -90,7 +87,6 @@ public class BoardController {
     @PutMapping("/board/{boardId}")
     public ResponseEntity<?> updateBoard(@PathVariable Long boardId,
                                         @RequestBody Board board) throws BoardException {
-
         log.info("BoardController updateBoard / board : {}", board.toString());
         boardService.updateBoard(boardId, board);
 
@@ -107,7 +103,6 @@ public class BoardController {
      */
     @DeleteMapping("/board/{boardId}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long boardId) throws BoardException {
-
         log.info("BoardController deleteBoard / boardId : {}", boardId);
         boardService.deleteBoard(boardId);
 
