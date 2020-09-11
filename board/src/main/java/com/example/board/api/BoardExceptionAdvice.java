@@ -1,7 +1,7 @@
-package com.example.board.controller;
+package com.example.board.api;
 
-import com.example.board.BoardException;
-import com.example.board.util.BoardStatusUtil;
+import com.example.board.api.BoardException;
+import com.example.board.api.util.BoardStatusUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +13,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @ControllerAdvice
 @Slf4j
-public class BoardExceptionController {
+public class BoardExceptionAdvice {
 
     /** Service에서 발생하는 예외를 핸들링 해준다.
      *  서비스에서 예외가 발생한 경우 에러메시지와 에러코드를 클라이언트로 전송한다.

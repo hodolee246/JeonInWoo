@@ -1,8 +1,8 @@
-package com.example.board.controller;
+package com.example.board.api.controller;
 
-import com.example.board.BoardException;
-import com.example.board.model.Board;
-import com.example.board.service.BoardService;
+import com.example.board.api.BoardException;
+import com.example.board.api.model.Board;
+import com.example.board.api.service.BoardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

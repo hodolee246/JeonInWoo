@@ -1,6 +1,5 @@
-package com.example.board.model;
+package com.example.board.api.model;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

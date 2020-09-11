@@ -1,6 +1,6 @@
-package com.example.board.specification;
+package com.example.board.api.specification;
 
-import com.example.board.model.Board;
+import com.example.board.api.model.Board;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
