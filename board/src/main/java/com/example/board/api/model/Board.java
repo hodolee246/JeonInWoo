@@ -39,11 +39,4 @@ public class Board {
     @Column
     private int status;
 
-    public void createBoard() {
-        this.status = 1;
-    }
-
-    public void deleteBoard() {
-        this.status = 0;
-    }
 }

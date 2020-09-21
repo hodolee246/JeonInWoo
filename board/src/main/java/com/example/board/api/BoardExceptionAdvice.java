@@ -22,7 +22,7 @@ public class BoardExceptionAdvice {
      */
     @ExceptionHandler(BoardException.class)
     public ResponseEntity<?> boardException(BoardException e) {
-        log.error("BoardController boardException");
+        log.error("BoardExceptionAdvice boardException()");
         HashMap<String, Object> responseMap = new HashMap<>();
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("statusCode", e.getErrorCode());
@@ -40,7 +40,7 @@ public class BoardExceptionAdvice {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> ServerException(Exception e) {
-        log.error("BoardController Exception");
+        log.error("BoardExceptionAdvice boardException()");
         HashMap<String, Object> responseMap = new HashMap<>();
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("statusCode", BoardStatusUtil.getServerErrorCode());
