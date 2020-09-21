@@ -34,6 +34,7 @@ public class BoardService {
 
     public void createBoard(Board board) throws BoardException {
         try {
+            board.createBoard();
             boardRepository.save(board);
         } catch (Exception e) {
             throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
@@ -69,10 +70,11 @@ public class BoardService {
         }
     }
 
-    public void deleteBoard(Long boardId) throws BoardException {
+    public void deleteBoard(Board board) throws BoardException {
         try {
-            // 게시물 삭제 상태값 으로 변경
-            boardRepository.deleteBoard(boardId);
+            // 게시물 상태값 변경
+            board.deleteBoard();
+            boardRepository.save(board);
         } catch (Exception e) {
             throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
         }
