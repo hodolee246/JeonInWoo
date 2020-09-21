@@ -2,8 +2,12 @@ package com.example.board.api.controller;
 
 import com.example.board.api.BoardException;
 import com.example.board.api.model.Board;
+import com.example.board.api.repository.BoardRepository;
 import com.example.board.api.service.BoardService;
+import com.example.board.api.specification.BoardSpecification;
+import com.example.board.api.util.BoardStatusUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -38,12 +42,14 @@ public class BoardController {
         log.info("BoardController boardList / page : {} / category : {} / keyword : {}", pageable.toString(), category, keyword);
         Page<Board> boardPage = boardService.boardList(category, keyword, pageable);
 
+        HashMap<String, Object> responseMap = new HashMap<>();
         HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("statusCode", BoardStatusUtil.getOkCode());
         resultMap.put("boardList", boardPage.getContent());
         resultMap.put("totalPages", boardPage.getTotalPages());
-        resultMap.put("page", boardPage.getNumber());
+        responseMap.put("result", resultMap);
 
-        return ok().body(resultMap);
+        return ok().body(responseMap);
     }
 
     /** 단일 게시물을 조회하여 클라이언트로 전송한다.
@@ -58,7 +64,13 @@ public class BoardController {
         log.info("BoardController readBoard / boardId : {}", boardId);
         Board board = boardService.readBoard(boardId);
 
-        return ok().body(board);
+        HashMap<String, Object> responseMap = new HashMap<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("statusCode", BoardStatusUtil.getOkCode());
+        resultMap.put("board", board);
+        responseMap.put("result", resultMap);
+
+        return ok().body(responseMap);
     }
 
     /** 새로운 게시물을 생성한다.
@@ -73,7 +85,12 @@ public class BoardController {
         log.info("BoardController writeBoard / board : {}", board.toString());
         boardService.createBoard(board);
 
-        return ok().build();
+        HashMap<String, Object> responseMap = new HashMap<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("statusCode", BoardStatusUtil.getCreateCode());
+        responseMap.put("result", resultMap);
+
+        return ok().body(responseMap);
     }
 
     /** 게시물을 수정한다.
@@ -90,7 +107,12 @@ public class BoardController {
         log.info("BoardController updateBoard / board : {}", board.toString());
         boardService.updateBoard(boardId, board);
 
-        return ok().build();
+        HashMap<String, Object> responseMap = new HashMap<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("statusCode", BoardStatusUtil.getCreateCode());
+        responseMap.put("result", resultMap);
+
+        return ok().body(responseMap);
     }
 
     /** 게시물을 삭제한다.
@@ -106,6 +128,11 @@ public class BoardController {
         log.info("BoardController deleteBoard / boardId : {}", boardId);
         boardService.deleteBoard(boardId);
 
-        return ok().build();
+        HashMap<String, Object> responseMap = new HashMap<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("statusCode", BoardStatusUtil.getNoContentCode());
+        responseMap.put("result", resultMap);
+
+        return ok().body(responseMap);
     }
 }

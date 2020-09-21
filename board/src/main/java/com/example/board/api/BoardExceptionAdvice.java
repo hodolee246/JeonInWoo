@@ -1,6 +1,5 @@
 package com.example.board.api;
 
-import com.example.board.api.BoardException;
 import com.example.board.api.util.BoardStatusUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +22,14 @@ public class BoardExceptionAdvice {
      */
     @ExceptionHandler(BoardException.class)
     public ResponseEntity<?> boardException(BoardException e) {
-        log.info("BoardController boardException");
+        log.error("BoardController boardException");
+        HashMap<String, Object> responseMap = new HashMap<>();
         HashMap<String, Object> resultMap = new HashMap<>();
-        HashMap<String, Object> error = new HashMap<>();
-        error.put("code", e.getErrorCode());
-        error.put("message", e.getMessage());
-        resultMap.put("error", error);
+        resultMap.put("statusCode", e.getErrorCode());
+        resultMap.put("message", e.getMessage());
+        responseMap.put("result", resultMap);
 
-        return ok().body(resultMap);
+        return ok().body(responseMap);
     }
 
     /** 예상치 못한 모든 에러를 핸들링 해준다.
@@ -41,13 +40,13 @@ public class BoardExceptionAdvice {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> ServerException(Exception e) {
-        log.info("BoardController Exception");
+        log.error("BoardController Exception");
+        HashMap<String, Object> responseMap = new HashMap<>();
         HashMap<String, Object> resultMap = new HashMap<>();
-        HashMap<String, Object> error = new HashMap<>();
-        error.put("code", BoardStatusUtil.getServerErrorCode());
-        error.put("message", e.getMessage());
-        resultMap.put("error", error);
+        resultMap.put("statusCode", BoardStatusUtil.getServerErrorCode());
+        resultMap.put("errorMessage", e.getMessage());
+        responseMap.put("result", resultMap);
 
-        return ok().body(resultMap);
+        return ok().body(responseMap);
     }
 }
