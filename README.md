@@ -32,5 +32,5 @@ Spring 프레임워크를 이용하여 제작한 게시판 백앤드 이며 각 
 ## 삭제
 선택한 게시물을 삭제한다.    
 게시물을 삭제할 경우 DB에서 로우를 삭제하는게 아닌 게시물의 상태값을 0으로 변경한다.    
-![삭제 2020-09-22 035731](https://user-images.githubusercontent.com/54667876/93809570-65175080-fc88-11ea-819f-5a2f4b25ccb2.png)
+![삭제 2020-09-22 143426](https://user-images.githubusercontent.com/54667876/93847030-c2d78700-fce0-11ea-8a21-5e7dfe57fd63.png)
 
