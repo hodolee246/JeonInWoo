@@ -16,7 +16,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     // 삭제된 게시판 상태 코드
-    private static final int DELETE_BOARD_CODE = 0;
+    private static final int DELETE_BOARD_STATUS = 0;
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
@@ -44,7 +44,7 @@ public class BoardService {
         try {
             Board board = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 NullPointException을 발생시킨다.
-            if(board.getStatus() == DELETE_BOARD_CODE) {
+            if(board == null || board.getStatus() == DELETE_BOARD_STATUS) {
                 throw new NullPointerException();
             } else {
                 return board;
@@ -60,7 +60,7 @@ public class BoardService {
         try {
             Board isBoard = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 NullPointException을 발생시킨다.
-            if(isBoard.getStatus() == DELETE_BOARD_CODE) {
+            if(isBoard == null || board.getStatus() == DELETE_BOARD_STATUS) {
                 throw new NullPointerException();
             }
             boardRepository.save(board);
@@ -71,10 +71,17 @@ public class BoardService {
         }
     }
 
-    public void deleteBoard(Board board) throws BoardException {
+    public void deleteBoard(Long boardId) throws BoardException {
         try {
+            Board board = boardRepository.findByBoardId(boardId);
+            if(board == null || board.getStatus() == DELETE_BOARD_STATUS) {
+                throw new NullPointerException();
+            }
             // 게시물 상태값 변경
+            board.setStatus(0);
             boardRepository.save(board);
+        } catch (NullPointerException exception) {
+            throw new BoardException(BoardStatusUtil.getNotFoundErrorMessage(), BoardStatusUtil.getNotFoundCode());
         } catch (Exception e) {
             throw new BoardException(BoardStatusUtil.getServerErrorMessage(), BoardStatusUtil.getServerErrorCode());
         }

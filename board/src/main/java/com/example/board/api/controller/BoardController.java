@@ -124,10 +124,9 @@ public class BoardController {
      * @throws BoardException
      */
     @DeleteMapping("/board/{boardId}")
-    public ResponseEntity<?> deleteBoard(@PathVariable Long boardId,
-                                         @RequestBody Board board) throws BoardException {
-        log.info("BoardController deleteBoard / boardId : {} / board : {}", boardId, board);
-        boardService.deleteBoard(board);
+    public ResponseEntity<?> deleteBoard(@PathVariable Long boardId) throws BoardException {
+        log.info("BoardController deleteBoard / boardId : {}", boardId);
+        boardService.deleteBoard(boardId);
 
         HashMap<String, Object> responseMap = new HashMap<>();
         HashMap<String, Object> resultMap = new HashMap<>();

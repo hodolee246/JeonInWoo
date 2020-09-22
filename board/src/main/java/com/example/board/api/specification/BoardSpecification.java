@@ -15,6 +15,7 @@ public class BoardSpecification {
             if (category.equals("writer") || category.equals("content") || category.equals("title")) {
                 predicates.add(criteriaBuilder.like(root.get(category), "%" + keyword + "%"));
             }
+            predicates.add(criteriaBuilder.equal(root.get("status"), 1));
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
