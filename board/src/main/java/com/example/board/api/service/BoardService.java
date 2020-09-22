@@ -78,7 +78,7 @@ public class BoardService {
                 throw new NullPointerException();
             }
             // 게시물 상태값 변경
-            board.setStatus(0);
+            board.setStatus(DELETE_BOARD_STATUS);
             boardRepository.save(board);
         } catch (NullPointerException exception) {
             throw new BoardException(BoardStatusUtil.getNotFoundErrorMessage(), BoardStatusUtil.getNotFoundCode());
