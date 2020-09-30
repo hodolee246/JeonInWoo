@@ -1,4 +1,4 @@
-package com.example.board.api.util;
+package com.rest.api.util;
 
 public class BoardStatusUtil {
     // 404 메시지

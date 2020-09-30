@@ -1,13 +1,10 @@
-package com.example.board.api.controller;
+package com.rest.api.controller;
 
-import com.example.board.api.BoardException;
-import com.example.board.api.model.Board;
-import com.example.board.api.repository.BoardRepository;
-import com.example.board.api.service.BoardService;
-import com.example.board.api.specification.BoardSpecification;
-import com.example.board.api.util.BoardStatusUtil;
+import com.rest.api.BoardException;
+import com.rest.api.model.Board;
+import com.rest.api.service.BoardService;
+import com.rest.api.util.BoardStatusUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

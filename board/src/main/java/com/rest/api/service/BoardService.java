@@ -1,10 +1,10 @@
-package com.example.board.api.service;
+package com.rest.api.service;
 
-import com.example.board.api.BoardException;
-import com.example.board.api.model.Board;
-import com.example.board.api.repository.BoardRepository;
-import com.example.board.api.specification.BoardSpecification;
-import com.example.board.api.util.BoardStatusUtil;
+import com.rest.api.BoardException;
+import com.rest.api.model.Board;
+import com.rest.api.repository.BoardRepository;
+import com.rest.api.specification.BoardSpecification;
+import com.rest.api.util.BoardStatusUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

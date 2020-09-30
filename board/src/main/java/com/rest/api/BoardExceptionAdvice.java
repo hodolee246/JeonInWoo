@@ -1,6 +1,6 @@
-package com.example.board.api;
+package com.rest.api;
 
-import com.example.board.api.util.BoardStatusUtil;
+import com.rest.api.util.BoardStatusUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

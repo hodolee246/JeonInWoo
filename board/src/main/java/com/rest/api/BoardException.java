@@ -1,4 +1,4 @@
-package com.example.board.api;
+package com.rest.api;
 
 public class BoardException extends Exception {
 
