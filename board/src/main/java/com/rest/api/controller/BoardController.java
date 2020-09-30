@@ -4,6 +4,9 @@ import com.rest.api.BoardException;
 import com.rest.api.model.Board;
 import com.rest.api.service.BoardService;
 import com.rest.api.util.BoardStatusUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import static org.springframework.http.ResponseEntity.ok;
 
-@RestController
+@Api(tags = {"1. Board"})
 @Slf4j
+@RestController
+@RequestMapping(value = "/v1")
 public class BoardController {
 
     private final BoardService boardService;
@@ -23,19 +28,15 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    /** 존재하는 모든 게시물을 조회하여 클라이언트로 전송한다.
-     *  서버사이드 랜더링을 이용하여 사용자가 입력, 선택한 키워드와 카테고리로 게시물을 조회한다.
-     *
-     * @param pageable
-     * @param category
-     * @param keyword
-     * @return
-     * @throws BoardException
-     */
+    @ApiOperation(value = "게시물 전체 조회", notes = "선택한 카테고리와 키워드로 모든 게시물을 조회한다.")
     @GetMapping("/board")
-    public ResponseEntity<?> boardList(@PageableDefault(size = 5) Pageable pageable,
-                                       @RequestParam(name = "category", defaultValue = "") String category,
-                                       @RequestParam(name = "keyword", defaultValue = "") String keyword) throws BoardException {
+    public ResponseEntity<?> boardList(
+                                        @ApiParam(value = "페이지")
+                                        @PageableDefault(size = 5) Pageable pageable,
+                                        @ApiParam(value = "카테고리")
+                                        @RequestParam(defaultValue = "") String category,
+                                        @ApiParam(value = "키워드")
+                                        @RequestParam(defaultValue = "") String keyword) throws BoardException {
         log.info("BoardController boardList / page : {} / category : {} / keyword : {}", pageable.toString(), category, keyword);
         Page<Board> boardPage = boardService.boardList(category, keyword, pageable);
 
@@ -49,13 +50,7 @@ public class BoardController {
         return ok().body(responseMap);
     }
 
-    /** 단일 게시물을 조회하여 클라이언트로 전송한다.
-     *  사용자가 요청한 주소값으로 게시물을 조회한다.
-     *
-     * @param boardId
-     * @return
-     * @throws BoardException
-     */
+    @ApiOperation(value = "게시물 조회", notes = "선택한 게시물을 조회한다.")
     @GetMapping("/board/{boardId}")
     public ResponseEntity<?> readBoard(@PathVariable Long boardId) throws BoardException {
         log.info("BoardController readBoard / boardId : {}", boardId);
@@ -70,15 +65,11 @@ public class BoardController {
         return ok().body(responseMap);
     }
 
-    /** 새로운 게시물을 생성한다.
-     *  사용자가 입력한 정보로 새로운 게시물을 생성한다.
-     *
-     * @param board
-     * @return
-     * @throws BoardException
-     */
+    @ApiOperation(value = "게시물 생성", notes = "입력한 게시물을 생성한다.")
     @PostMapping("/board")
-    public ResponseEntity<?> createBoard(@RequestBody Board board) throws BoardException {
+    public ResponseEntity<?> createBoard(
+                                        @ApiParam(value = "게시물", required = true)
+                                        @RequestBody Board board) throws BoardException {
         log.info("BoardController writeBoard / board : {}", board.toString());
         boardService.createBoard(board);
 
@@ -90,16 +81,11 @@ public class BoardController {
         return ok().body(responseMap);
     }
 
-    /** 게시물을 수정한다.
-     *  사용자가 요청한 게시물을 입력한 정보로 변경한다.
-     *
-     * @param boardId
-     * @param board
-     * @return
-     * @throws BoardException
-     */
+    @ApiOperation(value = "게시물 수정", notes = "선택한 게시물을 수정한다.")
     @PutMapping("/board/{boardId}")
-    public ResponseEntity<?> updateBoard(@PathVariable Long boardId,
+    public ResponseEntity<?> updateBoard(
+                                        @PathVariable Long boardId,
+                                        @ApiParam(value = "게시물", required = true)
                                         @RequestBody Board board) throws BoardException {
         log.info("BoardController updateBoard / board : {}", board.toString());
         boardService.updateBoard(boardId, board);
@@ -112,14 +98,7 @@ public class BoardController {
         return ok().body(responseMap);
     }
 
-    /** 게시물을 삭제한다.
-     *  사용자가 요청한 정보의 게시물을 삭제한다.
-     *  삭제시 데이터베이스의 레이블을 삭제하는 것이 아닌 상태값을 0으로 변경해준다.
-     *
-     * @param boardId
-     * @return
-     * @throws BoardException
-     */
+    @ApiOperation(value = "게시물 삭제", notes = "선택한 게시물을 삭제한다. 삭제시 게시물의 상태값을 0으로 변경한다.")
     @DeleteMapping("/board/{boardId}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long boardId) throws BoardException {
         log.info("BoardController deleteBoard / boardId : {}", boardId);
