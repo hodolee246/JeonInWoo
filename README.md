@@ -14,6 +14,12 @@ Spring 프레임워크를 이용하여 제작한 게시판 백앤드 이며 각 
     - 생성
     - 수정
     - 삭제
+
+어플리케이션을 가동 후 http://localhost:8080/swagger-ui.html 에 접속하여 Swagger api 문서를 확인할 수 있습니다.    
+![swagger (2)](https://user-images.githubusercontent.com/54667876/94676694-b09bbf80-0356-11eb-8d58-c18ec42e6460.PNG)
+
+** **Swagger를 이용한 실행화면은 하나의 사진으로 담을 수 없어 Postman으로 대체하여 캡처 하였습니다.**    
+
 ---
 ## 전체 조회
 입력한 카테고리 및 검색내용으로 삭제되지 않은 게시물을 조회하여 반환해준다.    
