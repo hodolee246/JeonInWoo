@@ -1,8 +1,6 @@
 package com.rest.api.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -12,7 +10,9 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @ToString
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Board {
 
     @Id
