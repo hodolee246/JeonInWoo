@@ -22,8 +22,6 @@ public class SwaggerConfiguration {
                 // 기본으로 세팅되는 200,401,403,404 메시지를 표시 하지 않음
                 .useDefaultResponseMessages(false);
     }
-
-    // 본 설정값은 https://daddyprogrammer.org/post/313/swagger-api-doc/ 블로그를 참고하여 제작하였습니다.
     private ApiInfo swaggerInfo() {
         return new ApiInfoBuilder().title("Spring API Documentation")
                 .description("SpringBoot로 제작한 rest api 입니다.")
