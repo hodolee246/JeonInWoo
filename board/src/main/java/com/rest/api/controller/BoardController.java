@@ -36,7 +36,7 @@ public class BoardController {
                                         @RequestParam(defaultValue = "") String category,
                                         @ApiParam(value = "키워드")
                                         @RequestParam(defaultValue = "") String keyword) throws BoardException {
-        log.info("BoardController boardList / page : {} / category : {} / keyword : {}", pageable.toString(), category, keyword);
+        log.info("BoardController boardList / page : '{}' / category : '{}' / keyword : '{}'", pageable.toString(), category, keyword);
         Page<Board> boardPage = boardService.boardList(category, keyword, pageable);
 
         return responseService.getBoardListResult(boardPage.getContent());
@@ -45,7 +45,7 @@ public class BoardController {
     @ApiOperation(value = "게시물 조회", notes = "선택한 게시물을 조회한다.")
     @GetMapping("/board/{boardId}")
     public BoardSingleResult readBoard(@PathVariable Long boardId) throws BoardException {
-        log.info("BoardController readBoard / boardId : {}", boardId);
+        log.info("BoardController readBoard / boardId : '{}'", boardId);
         Board board = boardService.readBoard(boardId);
 
         return responseService.getBoardSingleResult(board);
@@ -56,7 +56,7 @@ public class BoardController {
     public CommonBoardResult createBoard(
                                         @ApiParam(value = "게시물", required = true)
                                         @RequestBody Board board) throws BoardException {
-        log.info("BoardController writeBoard / board : {}", board.toString());
+        log.info("BoardController writeBoard / board : '{}'", board.toString());
         boardService.createBoard(board);
 
         return responseService.getCreatedBoardResult();
@@ -68,7 +68,7 @@ public class BoardController {
                                         @PathVariable Long boardId,
                                         @ApiParam(value = "게시물", required = true)
                                         @RequestBody Board board) throws BoardException {
-        log.info("BoardController updateBoard / board : {}", board.toString());
+        log.info("BoardController updateBoard / board : '{}'", board.toString());
         boardService.updateBoard(boardId, board);
 
         return responseService.getCreatedBoardResult();
@@ -77,7 +77,7 @@ public class BoardController {
     @ApiOperation(value = "게시물 삭제", notes = "선택한 게시물을 삭제한다. 삭제시 게시물의 상태값을 0으로 변경한다.")
     @DeleteMapping("/board/{boardId}")
     public CommonBoardResult deleteBoard(@PathVariable Long boardId) throws BoardException {
-        log.info("BoardController deleteBoard / boardId : {}", boardId);
+        log.info("BoardController deleteBoard / boardId : '{}'", boardId);
         boardService.deleteBoard(boardId);
 
         return responseService.getNoContentBoardResult();

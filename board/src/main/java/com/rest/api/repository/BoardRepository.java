@@ -12,4 +12,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>, JpaSpecific
     Page<Board> findAll(Specification<Board> specification, Pageable pageable);
 
     Board findByBoardId(Long boardId);
+
+    Long countByStatus(int status);
 }

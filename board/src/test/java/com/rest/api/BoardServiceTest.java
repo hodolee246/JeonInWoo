@@ -5,14 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.rest.api.model.Board;
 import com.rest.api.repository.BoardRepository;
 import com.rest.api.service.BoardService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
-
 @SpringBootTest
 public class BoardServiceTest {
+
+    private final int NONE_DELETE_BOARD_STATUS = 1;
 
     @Autowired
     BoardService boardService;
@@ -20,45 +21,82 @@ public class BoardServiceTest {
     @Autowired
     BoardRepository boardRepository;
 
+    @BeforeEach
+    public void setUp() {
+        boardRepository.deleteAll();
+    }
+
     @Test
     public void getBoard() throws BoardException {
-        Board board = boardService.readBoard(6L);
-        assertEquals(board.getBoardId(), 6L);
+        Board boardObject = new Board()
+                .builder()
+                .writer("getBoardWriter")
+                .title("getBoardTitle")
+                .content("getBoardContent")
+                .status(NONE_DELETE_BOARD_STATUS)
+                .build();
+        boardService.createBoard(boardObject);
+        Board board = boardService.readBoard(1L);
+        assertEquals(board.getBoardId(), 1L);
     }
 
     @Test
-    @Transactional
     public void createBoard() throws BoardException {
-        boardService.createBoard(Board.builder()
-                .boardId(60L)
-                .writer("jeoninwoo60")
-                .title("title60")
-                .content("content60")
-                .status(1)
-                .build());
-        Board board = boardService.readBoard(60L);
-        assertEquals(board.getBoardId(), 60L);
+        Board boardObject = new Board()
+                .builder()
+                .writer("createBoardWriter")
+                .title("createBoardTitle")
+                .content("createBoardContent")
+                .status(NONE_DELETE_BOARD_STATUS)
+                .build();
+        boardService.createBoard(boardObject);
+        Board board = boardService.readBoard(1L);
+        assertEquals(board.getBoardId(), 1L);
     }
 
     @Test
-    @Transactional
     public void updateBoard() throws BoardException {
-        boardService.updateBoard(6L, Board.builder()
-                .boardId(6L)
-                .writer("jeoninwoo6")
-                .title("title6")
-                .content("content6")
-                .status(1)
-                .build());
-        Board board = boardService.readBoard(6L);
-        assertEquals(board.getWriter(), "jeoninwoo6");
+        Board boardObject = new Board()
+                .builder()
+                .writer("boardWriter")
+                .title("boardTitle")
+                .content("boardContent")
+                .status(NONE_DELETE_BOARD_STATUS)
+                .build();
+        boardService.createBoard(boardObject);
+        Board board = boardService.readBoard(1L);
+        assertEquals(board.getBoardId(), 1L);
+
+        Board updateBoardObject = new Board()
+                .builder()
+                .boardId(board.getBoardId())
+                .writer("updateBoardWriter")
+                .title("updateBoardTitle")
+                .content("updateBoardContent")
+                .status(NONE_DELETE_BOARD_STATUS)
+                .build();
+        boardService.updateBoard(board.getBoardId(), updateBoardObject);
+        assertEquals(board.getBoardId(), updateBoardObject.getBoardId());
+        assertEquals(updateBoardObject.getWriter(), "updateBoardWriter");
+        assertEquals(updateBoardObject.getTitle(), "updateBoardTitle");
+        assertEquals(updateBoardObject.getContent(), "updateBoardContent");
     }
 
     @Test
-    @Transactional
     public void deleteBoard() throws BoardException {
-        boardService.deleteBoard(6L);
-        Board board = boardRepository.findByBoardId(6L);
-        assertEquals(board.getStatus(), 0);
+        Board boardObject = new Board()
+                .builder()
+                .writer("createBoardWriter")
+                .title("createBoardTitle")
+                .content("createBoardContent")
+                .status(NONE_DELETE_BOARD_STATUS)
+                .build();
+        boardService.createBoard(boardObject);
+        Long createBoardCount = boardRepository.count();
+        assertEquals(1, createBoardCount);
+
+        boardService.deleteBoard(1L);
+        Long deleteBoardCount = boardRepository.countByStatus(NONE_DELETE_BOARD_STATUS);
+        assertEquals(0, deleteBoardCount);
     }
 }
