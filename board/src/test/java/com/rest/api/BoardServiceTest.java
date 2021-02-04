@@ -20,6 +20,7 @@ import java.util.List;
 public class BoardServiceTest {
 
     private final int NOT_DELETE_BOARD_STATUS = 1;
+    private final int DELETE_BOARD_STATUS = 0;
     private Board boardObject;
 
     @Autowired
@@ -43,6 +44,12 @@ public class BoardServiceTest {
         boardList.add(Board.builder().writer("writerB").title("titleB").content("contentB").status(NOT_DELETE_BOARD_STATUS).build());
 
         return boardList;
+    }
+
+    public void assertionsCheck(Board board) {
+        assertEquals(board.getWriter(), "boardWriter");
+        assertEquals(board.getTitle(), "boardTitle");
+        assertEquals(board.getContent(), "boardContent");
     }
 
     @Test
@@ -79,9 +86,7 @@ public class BoardServiceTest {
         Board board = boardService.readBoard(6L);
 
         assertEquals(board.getBoardId(), 6L);
-        assertEquals(board.getWriter(), "boardWriter");
-        assertEquals(board.getTitle(), "boardTitle");
-        assertEquals(board.getContent(), "boardContent");
+        assertionsCheck(board);
     }
 
     @Test
@@ -92,9 +97,7 @@ public class BoardServiceTest {
         Board board = boardService.readBoard(7L);
 
         assertEquals(board.getBoardId(), 7L);
-        assertEquals(board.getWriter(), "boardWriter");
-        assertEquals(board.getTitle(), "boardTitle");
-        assertEquals(board.getContent(), "boardContent");
+        assertionsCheck(board);
     }
 
     @Test
@@ -105,9 +108,7 @@ public class BoardServiceTest {
         Board board = boardService.readBoard(8L);
 
         assertEquals(board.getBoardId(), 8L);
-        assertEquals(board.getWriter(), "boardWriter");
-        assertEquals(board.getTitle(), "boardTitle");
-        assertEquals(board.getContent(), "boardContent");
+        assertionsCheck(board);
 
         Board updateBoardObject = Board.builder()
                 .boardId(board.getBoardId())
@@ -137,5 +138,29 @@ public class BoardServiceTest {
         Long deleteBoardCount = boardRepository.countByStatus(NOT_DELETE_BOARD_STATUS);
 
         assertEquals(0, deleteBoardCount);
+    }
+
+    @Test
+    @Order(5)
+    @DisplayName("예외 테스트")
+    public void boardException() {
+        Board boardObject2 = Board.builder()
+                .boardId(10L)
+                .writer("boardWriter")
+                .title("boardTitle")
+                .content("boardContent")
+                .status(DELETE_BOARD_STATUS)
+                .build();
+        assertThrows(BoardException.class, () -> {
+            boardService.createBoard(boardObject2);
+            boardService.readBoard(10L);
+        });
+        assertThrows(BoardException.class, () -> {
+            boardService.updateBoard(10L, boardObject2);
+        });
+        assertThrows(BoardException.class, () -> {
+            boardService.deleteBoard(10L);
+        });
+
     }
 }
