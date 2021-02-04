@@ -20,6 +20,7 @@ import java.util.List;
 public class BoardServiceTest {
 
     private final int NOT_DELETE_BOARD_STATUS = 1;
+    private Board boardObject;
 
     @Autowired
     BoardService boardService;
@@ -30,6 +31,7 @@ public class BoardServiceTest {
     @BeforeEach
     public void setUp() {
         boardRepository.deleteAll();
+        boardObject = Board.builder().writer("boardWriter").title("boardTitle").content("boardContent").status(NOT_DELETE_BOARD_STATUS).build();
     }
 
     public List<Board> getList() {
@@ -45,7 +47,8 @@ public class BoardServiceTest {
 
     @Test
     @Order(0)
-    public void getSearchBoard() throws BoardException{
+    @DisplayName("게시물 리스트 조회")
+    public void getSearchBoardList() throws BoardException{
         String category = "title";
         String keywordA = "titleA";
         String keywordB = "titleB";
@@ -70,14 +73,8 @@ public class BoardServiceTest {
 
     @Test
     @Order(1)
+    @DisplayName("단일 게시물 조회")
     public void getBoard() throws BoardException {
-        Board boardObject = new Board()
-                .builder()
-                .writer("boardWriter")
-                .title("boardTitle")
-                .content("boardContent")
-                .status(NOT_DELETE_BOARD_STATUS)
-                .build();
         boardService.createBoard(boardObject);
         Board board = boardService.readBoard(6L);
 
@@ -89,14 +86,8 @@ public class BoardServiceTest {
 
     @Test
     @Order(2)
+    @DisplayName("게시물 생성")
     public void createBoard() throws BoardException {
-        Board boardObject = new Board()
-                .builder()
-                .writer("boardWriter")
-                .title("boardTitle")
-                .content("boardContent")
-                .status(NOT_DELETE_BOARD_STATUS)
-                .build();
         boardService.createBoard(boardObject);
         Board board = boardService.readBoard(7L);
 
@@ -108,14 +99,8 @@ public class BoardServiceTest {
 
     @Test
     @Order(3)
+    @DisplayName("게시물 수정")
     public void updateBoard() throws BoardException {
-        Board boardObject = new Board()
-                .builder()
-                .writer("boardWriter")
-                .title("boardTitle")
-                .content("boardContent")
-                .status(NOT_DELETE_BOARD_STATUS)
-                .build();
         boardService.createBoard(boardObject);
         Board board = boardService.readBoard(8L);
 
@@ -124,8 +109,7 @@ public class BoardServiceTest {
         assertEquals(board.getTitle(), "boardTitle");
         assertEquals(board.getContent(), "boardContent");
 
-        Board updateBoardObject = new Board()
-                .builder()
+        Board updateBoardObject = Board.builder()
                 .boardId(board.getBoardId())
                 .writer("updateBoardWriter")
                 .title("updateBoardTitle")
@@ -142,14 +126,8 @@ public class BoardServiceTest {
 
     @Test
     @Order(4)
+    @DisplayName("게시물 삭제")
     public void deleteBoard() throws BoardException {
-        Board boardObject = new Board()
-                .builder()
-                .writer("boardWriter")
-                .title("boardTitle")
-                .content("boardContent")
-                .status(NOT_DELETE_BOARD_STATUS)
-                .build();
         boardService.createBoard(boardObject);
         Long notDeleteBoardCount = boardRepository.count();
 
