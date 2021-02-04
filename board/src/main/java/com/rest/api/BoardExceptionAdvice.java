@@ -25,7 +25,7 @@ public class BoardExceptionAdvice {
     }
 
     // 서버에서 발생한 모든 Exception을 처리한다.
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({BoardRunTimeException.class, Exception.class})
     public CommonBoardResult ServerException(Exception e) {
         log.error("BoardExceptionAdvice boardException() Exception : '{}'", e.getMessage());
 

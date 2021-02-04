@@ -1,6 +1,7 @@
 package com.rest.api.service;
 
 import com.rest.api.BoardException;
+import com.rest.api.BoardRunTimeException;
 import com.rest.api.model.Board;
 import com.rest.api.repository.BoardRepository;
 import com.rest.api.specification.BoardSpecification;
@@ -29,22 +30,15 @@ public class BoardService {
         this.boardRepository = boardRepository;
     }
 
-    public Page<Board> boardList(String category, String keyword, Pageable pageable) throws BoardException {
+    public Page<Board> boardList(String category, String keyword, Pageable pageable) throws BoardRunTimeException {
         // category, keyword like query 생성
         Specification<Board> specification = Specification.where(BoardSpecification.boardLike(category, keyword));
-        try {
-            return boardRepository.findAll(specification, pageable);
-        } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
-        }
+
+        return boardRepository.findAll(specification, pageable);
     }
 
-    public void createBoard(Board board) throws BoardException {
-        try {
-            boardRepository.save(board);
-        } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
-        }
+    public void createBoard(Board board) throws BoardRunTimeException {
+        boardRepository.save(board);
     }
 
     public Board readBoard(Long boardId) throws BoardException {
@@ -58,8 +52,6 @@ public class BoardService {
             }
         } catch (NullPointerException exception) {
             throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
-        } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
         }
     }
 
@@ -73,8 +65,6 @@ public class BoardService {
             boardRepository.save(board);
         } catch (NullPointerException exception) {
             throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
-        } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
         }
     }
 
@@ -89,8 +79,6 @@ public class BoardService {
             boardRepository.save(board);
         } catch (NullPointerException exception) {
             throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
-        } catch (Exception e) {
-            throw new BoardException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
         }
     }
 }
