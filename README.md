@@ -8,12 +8,12 @@ Spring 을 이용하여 제작한 게시판 REST-API 입니다.
 - DB
 	- MySQL
 
-- 주요기능
-	- 전체 조회
-    	- 단일 조회
-    	- 생성
-    	- 수정
-    	- 삭제
+- 기능
+   - 전체 조회
+   - 단일 조회
+   - 생성
+   - 수정
+   - 삭제
 - - -
 ![exception](https://user-images.githubusercontent.com/54667876/113023306-72c20b80-91c0-11eb-9a73-60efd9d0527e.PNG)
 복구가 불가능한 예외 발생 시 언체크 예외로 포장하도록 구성    
