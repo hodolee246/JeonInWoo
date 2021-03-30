@@ -18,18 +18,10 @@ public class BoardExceptionAdvice {
         this.responseService = responseService;
     }
 
-    // 서버에서 발생한 BoardException을 처리한다.
-    @ExceptionHandler(BoardException.class)
-    public CommonBoardResult boardException(BoardException e) {
-        log.error("BoardExceptionAdvice boardException() Exception : '{}', '{}'", e.getErrorCode(), e.getMessage());
-
-        return responseService.getFailBoardErrorResult(e);
-    }
-
-    // 서버에서 발생한 모든 Exception 및 BoardRunTimeException 을 처리한다.
-    @ExceptionHandler({BoardRunTimeException.class, Exception.class})
-    public CommonBoardResult ServerException(Exception e) {
-        log.error("BoardExceptionAdvice boardException() Exception : '{}'", e.getMessage());
+    // 서버에서 발생한 모든 BoardRunTimeException 을 처리한다.
+    @ExceptionHandler({BoardRunTimeException.class})
+    public CommonBoardResult ServerException(BoardRunTimeException e) {
+        log.error("BoardExceptionAdvice boardException() ExceptionMessage : '{}', ExceptionCode : '{}'", e.getMessage(), e.getErrorCode());
 
         return responseService.getFailServerErrorResult();
     }

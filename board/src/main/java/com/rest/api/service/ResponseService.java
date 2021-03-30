@@ -1,6 +1,6 @@
 package com.rest.api.service;
 
-import com.rest.api.BoardException;
+import com.rest.api.BoardRunTimeException;
 import com.rest.api.model.Board;
 import com.rest.api.model.BoardListResult;
 import com.rest.api.model.BoardSingleResult;
@@ -42,7 +42,7 @@ public class ResponseService {
         return boardListResult;
     }
     // FailBoardErrorResult
-    public CommonBoardResult getFailBoardErrorResult(BoardException data) {
+    public CommonBoardResult getFailBoardErrorResult(BoardRunTimeException data) {
         CommonBoardResult commonBoardResult = new CommonBoardResult();
         commonBoardResult.setStatusCode(data.getErrorCode());
         commonBoardResult.setStatusMessage(data.getMessage());

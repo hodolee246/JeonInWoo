@@ -15,6 +15,12 @@ import org.springframework.data.domain.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Board TestCode 필독
+ * DB ID값이 AutoIncrement 되도록 설계되어 있어 ID값을 하드코딩으로 사용하여 전체 테스트 실행이 아닌 개별 테스트 실행 시 테스트가 실패합니다.
+ * @author JeonInWoo
+ *  
+ */
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BoardServiceTest {
@@ -55,7 +61,7 @@ public class BoardServiceTest {
     @Test
     @Order(0)
     @DisplayName("게시물 리스트 조회")
-    public void getSearchBoardList() throws BoardException{
+    public void getSearchBoardList() {
         String category = "title";
         String keywordA = "titleA";
         String keywordB = "titleB";
@@ -81,7 +87,7 @@ public class BoardServiceTest {
     @Test
     @Order(1)
     @DisplayName("단일 게시물 조회")
-    public void getBoard() throws BoardException {
+    public void getBoard() {
         boardService.createBoard(boardObject);
         Board board = boardService.readBoard(6L);
 
@@ -92,7 +98,7 @@ public class BoardServiceTest {
     @Test
     @Order(2)
     @DisplayName("게시물 생성")
-    public void createBoard() throws BoardException {
+    public void createBoard() {
         boardService.createBoard(boardObject);
         Board board = boardService.readBoard(7L);
 
@@ -103,7 +109,7 @@ public class BoardServiceTest {
     @Test
     @Order(3)
     @DisplayName("게시물 수정")
-    public void updateBoard() throws BoardException {
+    public void updateBoard() {
         boardService.createBoard(boardObject);
         Board board = boardService.readBoard(8L);
 
@@ -128,7 +134,7 @@ public class BoardServiceTest {
     @Test
     @Order(4)
     @DisplayName("게시물 삭제")
-    public void deleteBoard() throws BoardException {
+    public void deleteBoard() {
         boardService.createBoard(boardObject);
         Long notDeleteBoardCount = boardRepository.count();
 
@@ -151,14 +157,14 @@ public class BoardServiceTest {
                 .content("boardContent")
                 .status(DELETE_BOARD_STATUS)
                 .build();
-        assertThrows(BoardException.class, () -> {
+        assertThrows(BoardRunTimeException.class, () -> {
             boardService.createBoard(boardObject2);
             boardService.readBoard(10L);
         });
-        assertThrows(BoardException.class, () -> {
+        assertThrows(BoardRunTimeException.class, () -> {
             boardService.updateBoard(10L, boardObject2);
         });
-        assertThrows(BoardException.class, () -> {
+        assertThrows(BoardRunTimeException.class, () -> {
             boardService.deleteBoard(10L);
         });
 

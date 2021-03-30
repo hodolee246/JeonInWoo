@@ -1,6 +1,5 @@
 package com.rest.api.service;
 
-import com.rest.api.BoardException;
 import com.rest.api.BoardRunTimeException;
 import com.rest.api.model.Board;
 import com.rest.api.repository.BoardRepository;
@@ -37,11 +36,15 @@ public class BoardService {
         return boardRepository.findAll(specification, pageable);
     }
 
-    public void createBoard(Board board) throws BoardRunTimeException {
-        boardRepository.save(board);
+    public void createBoard(Board board) {
+        try {
+            boardRepository.save(board);
+        } catch (Exception e) {
+            throw new BoardRunTimeException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
+        }
     }
 
-    public Board readBoard(Long boardId) throws BoardException {
+    public Board readBoard(Long boardId) {
         try {
             Board board = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 NullPointException을 발생시킨다.
@@ -51,11 +54,13 @@ public class BoardService {
                 return board;
             }
         } catch (NullPointerException exception) {
-            throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+            throw new BoardRunTimeException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+        } catch (Exception e) {
+            throw new BoardRunTimeException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
         }
     }
 
-    public void updateBoard(Long boardId, Board board) throws BoardException {
+    public void updateBoard(Long boardId, Board board) {
         try {
             Board isBoard = boardRepository.findByBoardId(boardId);
             // 조회한 게시물이 삭제된 게시물이면 NullPointException을 발생시킨다.
@@ -64,11 +69,13 @@ public class BoardService {
             }
             boardRepository.save(board);
         } catch (NullPointerException exception) {
-            throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+            throw new BoardRunTimeException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+        } catch (Exception e) {
+            throw new BoardRunTimeException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
         }
     }
 
-    public void deleteBoard(Long boardId) throws BoardException {
+    public void deleteBoard(Long boardId) {
         try {
             Board board = boardRepository.findByBoardId(boardId);
             if(board == null || board.getStatus() == DELETE_BOARD_STATUS) {
@@ -78,7 +85,9 @@ public class BoardService {
             board.setStatus(DELETE_BOARD_STATUS);
             boardRepository.save(board);
         } catch (NullPointerException exception) {
-            throw new BoardException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+            throw new BoardRunTimeException(NOT_FOUND_ERROR_MESSAGE, NOT_FOUND_CODE);
+        } catch (Exception e) {
+            throw new BoardRunTimeException(SERVER_ERROR_MESSAGE, SERVER_ERROR_CODE);
         }
     }
 }
